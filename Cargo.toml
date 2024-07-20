@@ -1,0 +1,12 @@
+[package]
+name = "pieselengine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+piesel_graphics = {path = "piesel_graphics"}
+
+[workspace]
+members = [
+    "piesel_graphics"
+]
