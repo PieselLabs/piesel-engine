@@ -20,7 +20,6 @@ public:
 
   void run();
 
-private:
-  GLFWwindow *window_;
-  gfx::rhi::RHIRef rhi_;
+  GLFWwindow *window;
+  gfx::rhi::RHIRef rhi;
 };

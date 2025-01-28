@@ -1,10 +1,10 @@
 #include "device.h"
-#include "utils.h"
+#include "vk_defs.h"
 #include <VkBootstrap.h>
 
 namespace gfx::rhi::vk {
 
-Device::Device(GLFWwindow *window, const Config &cfg) : window(window) {
+Device::Device(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window), current_frame(0) {
   vkb::InstanceBuilder builder;
 
   // make the vulkan instance, with basic debug features
@@ -44,9 +44,22 @@ Device::Device(GLFWwindow *window, const Config &cfg) : window(window) {
 
   device = vkbDevice.device;
   physical_device = physicalDevice.physical_device;
+
+  graphics_queue = vkbDevice.get_queue(vkb::QueueType::graphics).value();
+  graphics_family = vkbDevice.get_queue_index(vkb::QueueType::graphics).value();
+
+  VkCommandPoolCreateInfo commandPoolInfo = {};
+  commandPoolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+  commandPoolInfo.pNext = nullptr;
+  commandPoolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+  commandPoolInfo.queueFamilyIndex = graphics_family;
+
+  VK_SAFE_CALL(vkCreateCommandPool(device, &commandPoolInfo, nullptr, &command_pool));
 }
 
 Device::~Device() {
+  vkDeviceWaitIdle(device);
+  vkDestroyCommandPool(device, command_pool, nullptr);
   vkDestroySurfaceKHR(instance, surface, nullptr);
   vkDestroyDevice(device, nullptr);
   vkb::destroy_debug_utils_messenger(instance, debug_messenger);

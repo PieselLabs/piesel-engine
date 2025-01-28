@@ -5,17 +5,17 @@ App::App(const AppConfig &config) {
   glfwInit();
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-  window_ = glfwCreateWindow(config.window_width, config.window_height, "Vulkan", nullptr, nullptr);
-  rhi_ = gfx::rhi::create_rhi(window_, config.rhi_config);
+  window = glfwCreateWindow(config.window_width, config.window_height, "Vulkan", nullptr, nullptr);
+  rhi = gfx::rhi::create_rhi(window, config.rhi_config);
 }
 
 App::~App() {
-  glfwDestroyWindow(window_);
+  glfwDestroyWindow(window);
   glfwTerminate();
 }
 
 void App::run() {
-  while (!glfwWindowShouldClose(window_)) {
+  while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
   }
 }

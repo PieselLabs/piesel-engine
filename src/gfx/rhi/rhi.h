@@ -5,9 +5,10 @@ struct GLFWwindow;
 
 namespace gfx::rhi {
 
-struct CommandList {};
+struct CommandList {
+  virtual void begin() = 0;
+};
 using CommandListRef = std::shared_ptr<CommandList>;
-struct CommandListDesc {};
 
 struct Texture {};
 using TextureRef = std::shared_ptr<Texture>;
@@ -42,7 +43,7 @@ struct ComputePipelineDesc {
 };
 
 struct RHI {
-  virtual CommandListRef create_command_list(const CommandListDesc &desc) = 0;
+  virtual CommandListRef create_command_list() = 0;
   virtual TextureRef create_texture(const TextureDesc &desc) = 0;
   virtual BufferRef create_buffer(const BufferDesc &desc) = 0;
   virtual DescriptorSetRef create_descriptor_set(const DescriptorSetDesc &desc) = 0;
@@ -60,6 +61,7 @@ enum class Backend {
 struct Config {
   Backend backend = Backend::Vulkan;
   bool debug{false};
+  int inFlightFrames{3}; // min 1, max 3
 };
 
 RHIRef create_rhi(GLFWwindow *window, const Config &cfg);
