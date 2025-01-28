@@ -6,8 +6,8 @@
 #include "gfx/rhi/rhi.h"
 
 struct AppConfig {
-  uint32_t window_width;
-  uint32_t window_height;
+  uint32_t window_width{800};
+  uint32_t window_height{600};
 
   gfx::rhi::Config rhi_config;
 };

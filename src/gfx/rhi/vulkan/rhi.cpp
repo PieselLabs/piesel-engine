@@ -2,6 +2,8 @@
 
 namespace gfx::rhi::vk {
 
+VulkanRHI::VulkanRHI(GLFWwindow *window, const Config &cfg) {}
+
 CommandListRef VulkanRHI::create_command_list(const CommandListDesc &desc) { return nullptr; }
 TextureRef VulkanRHI::create_texture(const TextureDesc &desc) { return nullptr; }
 BufferRef VulkanRHI::create_buffer(const BufferDesc &desc) { return nullptr; }

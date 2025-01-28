@@ -1,3 +1,7 @@
-#include <iostream>
+#include "app/app.h"
 
-int main() { return 0; }
+int main() {
+  AppConfig cfg;
+  App app(cfg);
+  app.run();
+}
