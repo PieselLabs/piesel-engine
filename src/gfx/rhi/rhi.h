@@ -59,6 +59,7 @@ enum class Backend {
 
 struct Config {
   Backend backend = Backend::Vulkan;
+  bool debug{false};
 };
 
 RHIRef create_rhi(GLFWwindow *window, const Config &cfg);

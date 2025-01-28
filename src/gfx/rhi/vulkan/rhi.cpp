@@ -2,7 +2,8 @@
 
 namespace gfx::rhi::vk {
 
-VulkanRHI::VulkanRHI(GLFWwindow *window, const Config &cfg) {}
+VulkanRHI::VulkanRHI(GLFWwindow *window, const Config &cfg)
+    : context_(std::make_shared<Device>(window, cfg)), swapchain_(std::make_shared<Swapchain>(context_)) {}
 
 CommandListRef VulkanRHI::create_command_list(const CommandListDesc &desc) { return nullptr; }
 TextureRef VulkanRHI::create_texture(const TextureDesc &desc) { return nullptr; }
