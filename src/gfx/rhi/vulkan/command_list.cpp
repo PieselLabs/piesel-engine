@@ -1,16 +1,16 @@
 #include "command_list.h"
 
 namespace gfx::rhi::vk {
-VulkanCommandList::VulkanCommandList(std::shared_ptr<Device> device) : device(std::move(device)) {
+VulkanCommandList::VulkanCommandList(std::shared_ptr<Device> inDevice) : device(std::move(inDevice)) {
   VkCommandBufferAllocateInfo cmdAllocInfo{};
   cmdAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
   cmdAllocInfo.pNext = nullptr;
-  cmdAllocInfo.commandPool = device->command_pool;
-  cmdAllocInfo.commandBufferCount = device->cfg.inFlightFrames;
+  cmdAllocInfo.commandPool = device->GetCommandPool();
+  cmdAllocInfo.commandBufferCount = device->GetCfg().inFlightFrames;
   cmdAllocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 
-  VK_SAFE_CALL(vkAllocateCommandBuffers(device->device, &cmdAllocInfo, commandBuffers));
+  VK_SAFE_CALL(vkAllocateCommandBuffers(device->GetDevice(), &cmdAllocInfo, commandBuffers));
 }
 
-void VulkanCommandList::begin() { vkResetCommandBuffer(commandBuffers[device->current_frame], 0); }
+void VulkanCommandList::Begin() { vkResetCommandBuffer(commandBuffers[device->GetCurrentFrame()], 0); }
 } // namespace gfx::rhi::vk

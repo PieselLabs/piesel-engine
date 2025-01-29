@@ -9,7 +9,7 @@ class VulkanCommandList : public CommandList {
 public:
   VulkanCommandList(std::shared_ptr<Device> device);
 
-  void begin() override;
+  void Begin() override;
 
 private:
   VkCommandBuffer commandBuffers[MAX_FRAMES_IN_FLIGHT];

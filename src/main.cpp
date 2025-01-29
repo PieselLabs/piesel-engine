@@ -6,7 +6,7 @@ int main() {
   cfg.rhi_config.debug = true;
   App app(cfg);
 
-  gfx::rhi::CommandListRef commandList = app.rhi->create_command_list();
+  gfx::rhi::CommandListRef commandList = app.rhi->CreateCommandList();
 
   app.run();
 }

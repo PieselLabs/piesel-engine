@@ -11,12 +11,12 @@ public:
   ~Swapchain();
 
 private:
-  std::shared_ptr<const Device> ctx_;
-  VkSwapchainKHR swapchain_;
-  VkFormat format_;
+  std::shared_ptr<Device> ctx;
+  VkSwapchainKHR swapchain;
+  VkFormat format;
 
-  std::vector<VkImage> images_;
-  std::vector<VkImageView> views_;
-  VkExtent2D extent_;
+  std::vector<VkImage> images;
+  std::vector<VkImageView> views;
+  VkExtent2D extent;
 };
 } // namespace gfx::rhi::vk

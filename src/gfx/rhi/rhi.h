@@ -6,7 +6,7 @@ struct GLFWwindow;
 namespace gfx::rhi {
 
 struct CommandList {
-  virtual void begin() = 0;
+  virtual void Begin() = 0;
 };
 using CommandListRef = std::shared_ptr<CommandList>;
 
@@ -43,13 +43,13 @@ struct ComputePipelineDesc {
 };
 
 struct RHI {
-  virtual CommandListRef create_command_list() = 0;
-  virtual TextureRef create_texture(const TextureDesc &desc) = 0;
-  virtual BufferRef create_buffer(const BufferDesc &desc) = 0;
-  virtual DescriptorSetRef create_descriptor_set(const DescriptorSetDesc &desc) = 0;
-  virtual ShaderRef create_shader(const ShaderDesc &desc) = 0;
-  virtual GraphicsPipelineRef create_graphics_pipeline(const GraphicsPipelineDesc &desc) = 0;
-  virtual ComputePipelineRef create_compute_pipeline(const ComputePipelineDesc &desc) = 0;
+  virtual CommandListRef CreateCommandList() = 0;
+  virtual TextureRef CreateTexture(const TextureDesc &desc) = 0;
+  virtual BufferRef CreateBuffer(const BufferDesc &desc) = 0;
+  virtual DescriptorSetRef CreateDescriptorSet(const DescriptorSetDesc &desc) = 0;
+  virtual ShaderRef CreateShader(const ShaderDesc &desc) = 0;
+  virtual GraphicsPipelineRef CreateGraphicsPipeline(const GraphicsPipelineDesc &desc) = 0;
+  virtual ComputePipelineRef CreateComputePipeline(const ComputePipelineDesc &desc) = 0;
 };
 
 using RHIRef = std::shared_ptr<RHI>;
