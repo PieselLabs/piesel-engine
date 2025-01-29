@@ -6,7 +6,7 @@ VulkanCommandList::VulkanCommandList(std::shared_ptr<Device> inDevice) : device(
   cmdAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
   cmdAllocInfo.pNext = nullptr;
   cmdAllocInfo.commandPool = device->GetCommandPool();
-  cmdAllocInfo.commandBufferCount = device->GetCfg().inFlightFrames;
+  cmdAllocInfo.commandBufferCount = device->GetCfg().InFlightFrames;
   cmdAllocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
 
   VK_SAFE_CALL(vkAllocateCommandBuffers(device->GetDevice(), &cmdAllocInfo, commandBuffers));

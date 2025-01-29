@@ -10,6 +10,13 @@ public:
 
   ~Swapchain();
 
+  std::shared_ptr<Device> GetCtx();
+  VkSwapchainKHR GetSwapchain();
+  VkFormat GetFormat();
+  std::vector<VkImage> GetImages();
+  std::vector<VkImageView> GetViews();
+  VkExtent2D GetExtent();
+
 private:
   std::shared_ptr<Device> ctx;
   VkSwapchainKHR swapchain;

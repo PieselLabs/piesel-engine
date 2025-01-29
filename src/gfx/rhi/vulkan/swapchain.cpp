@@ -35,4 +35,11 @@ Swapchain::~Swapchain() {
     vkDestroyImageView(ctx->GetDevice(), views[i], nullptr);
   }
 }
+
+std::shared_ptr<Device> Swapchain::GetCtx() { return ctx; }
+VkSwapchainKHR Swapchain::GetSwapchain() { return swapchain; }
+VkFormat Swapchain::GetFormat() { return format; }
+std::vector<VkImage> Swapchain::GetImages() { return images; }
+std::vector<VkImageView> Swapchain::GetViews() { return views; }
+VkExtent2D Swapchain::GetExtent() { return extent; }
 } // namespace gfx::rhi::vk

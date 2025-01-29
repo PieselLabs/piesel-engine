@@ -6,10 +6,10 @@
 #include "gfx/rhi/rhi.h"
 
 struct AppConfig {
-  uint32_t window_width{800};
-  uint32_t window_height{600};
+  uint32_t WindowWidth{800};
+  uint32_t WindowHeight{600};
 
-  gfx::rhi::Config rhi_config;
+  gfx::rhi::Config RhiConfig;
 };
 
 class App {

@@ -37,9 +37,9 @@ struct PipelineLayoutDesc {};
 struct ComputePipeline {};
 using ComputePipelineRef = std::shared_ptr<ComputePipeline>;
 struct ComputePipelineDesc {
-  ShaderRef &shader;
-  PipelineLayoutRef &layout;
-  const char *entry;
+  ShaderRef &Shader;
+  PipelineLayoutRef &Layout;
+  const char *Entry;
 };
 
 struct RHI {
@@ -59,9 +59,9 @@ enum class Backend {
 };
 
 struct Config {
-  Backend backend = Backend::Vulkan;
-  bool debug{false};
-  int inFlightFrames{3}; // min 1, max 3
+  Backend Backend = Backend::Vulkan;
+  bool Debug{false};
+  int InFlightFrames{3}; // min 1, max 3
 };
 
 RHIRef create_rhi(GLFWwindow *window, const Config &cfg);

@@ -8,17 +8,17 @@ Device::Device(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window)
   vkb::InstanceBuilder builder;
 
   // make the vulkan instance, with basic debug features
-  auto inst_ret = builder.set_app_name("Example Vulkan Application")
-                      .request_validation_layers(cfg.debug)
-                      .use_default_debug_messenger()
-                      .require_api_version(1, 3, 0)
-                      .build();
+  auto instRet = builder.set_app_name("Example Vulkan Application")
+                     .request_validation_layers(cfg.Debug)
+                     .use_default_debug_messenger()
+                     .require_api_version(1, 3, 0)
+                     .build();
 
-  vkb::Instance vkb_inst = inst_ret.value();
+  vkb::Instance vkbInst = instRet.value();
 
   // grab the instance
-  instance = vkb_inst.instance;
-  debugMessenger = vkb_inst.debug_messenger;
+  instance = vkbInst.instance;
+  debugMessenger = vkbInst.debug_messenger;
 
   VK_SAFE_CALL(glfwCreateWindowSurface(instance, window, nullptr, &surface));
 
@@ -31,20 +31,20 @@ Device::Device(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window)
   features12.bufferDeviceAddress = true;
   features12.descriptorIndexing = true;
 
-  vkb::PhysicalDeviceSelector selector{vkb_inst};
-  vkb::PhysicalDevice physical_device = selector.set_minimum_version(1, 3)
-                                            .set_required_features_13(features)
-                                            .set_required_features_12(features12)
-                                            .set_surface(surface)
-                                            .select()
-                                            .value();
+  vkb::PhysicalDeviceSelector selector{vkbInst};
+  vkb::PhysicalDevice vkbPhysicalDevice = selector.set_minimum_version(1, 3)
+                                              .set_required_features_13(features)
+                                              .set_required_features_12(features12)
+                                              .set_surface(surface)
+                                              .select()
+                                              .value();
 
-  vkb::DeviceBuilder deviceBuilder{physical_device};
+  vkb::DeviceBuilder deviceBuilder{vkbPhysicalDevice};
   vkb::Device vkbDevice = deviceBuilder.build().value();
 
   device = vkbDevice.device;
-  physicalDevice = physical_device.physical_device;
 
+  physicalDevice = vkbPhysicalDevice.physical_device;
   graphicsQueue = vkbDevice.get_queue(vkb::QueueType::graphics).value();
   graphicsFamily = vkbDevice.get_queue_index(vkb::QueueType::graphics).value();
 
