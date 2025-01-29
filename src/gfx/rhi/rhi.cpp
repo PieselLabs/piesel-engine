@@ -5,10 +5,10 @@
 struct GLFWwindow;
 
 namespace gfx::rhi {
-RHIRef create_rhi(GLFWwindow *window, const Config &cfg) {
+RHIRef CreateRhi(GLFWwindow *window, const Config &cfg) {
   switch (cfg.Backend) {
   case Backend::Vulkan:
-    return vk::create_rhi(window, cfg);
+    return vk::CreateRhi(window, cfg);
   }
   assert(false);
   return nullptr;

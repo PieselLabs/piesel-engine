@@ -6,7 +6,7 @@ App::App(const AppConfig &config) {
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
   window = glfwCreateWindow(config.WindowWidth, config.WindowHeight, "Vulkan", nullptr, nullptr);
-  rhi = gfx::rhi::create_rhi(window, config.RhiConfig);
+  rhi = gfx::rhi::CreateRhi(window, config.RhiConfig);
 }
 
 App::~App() {

@@ -64,5 +64,5 @@ struct Config {
   int InFlightFrames{3}; // min 1, max 3
 };
 
-RHIRef create_rhi(GLFWwindow *window, const Config &cfg);
+RHIRef CreateRhi(GLFWwindow *window, const Config &cfg);
 } // namespace gfx::rhi
