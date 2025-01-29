@@ -6,11 +6,11 @@
 namespace gfx::rhi::vk {
 class Swapchain {
 public:
-  explicit Swapchain(std::shared_ptr<Device> ctx);
+  explicit Swapchain(std::shared_ptr<VulkanDevice> ctx);
 
   ~Swapchain();
 
-  std::shared_ptr<Device> GetCtx();
+  std::shared_ptr<VulkanDevice> GetCtx();
   VkSwapchainKHR GetSwapchain();
   VkFormat GetFormat();
   std::vector<VkImage> GetImages();
@@ -18,7 +18,7 @@ public:
   VkExtent2D GetExtent();
 
 private:
-  std::shared_ptr<Device> ctx;
+  std::shared_ptr<VulkanDevice> ctx;
   VkSwapchainKHR swapchain;
   VkFormat format;
 

@@ -7,10 +7,10 @@
 #include <GLFW/glfw3.h>
 
 namespace gfx::rhi::vk {
-class Device {
+class VulkanDevice {
 public:
-  Device(GLFWwindow *window, const Config &cfg);
-  ~Device();
+  VulkanDevice(GLFWwindow *window, const Config &cfg);
+  ~VulkanDevice();
 
   Config GetCfg();
   VkInstance GetInstance();

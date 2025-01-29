@@ -18,9 +18,11 @@ public:
   ShaderRef CreateShader(const ShaderDesc &desc) override;
   GraphicsPipelineRef CreateGraphicsPipeline(const GraphicsPipelineDesc &desc) override;
   ComputePipelineRef CreateComputePipeline(const ComputePipelineDesc &desc) override;
+  SemaphoreRef CreateSemphore() override;
+  FenceRef CreateFence() override;
 
 private:
-  std::shared_ptr<Device> device;
+  std::shared_ptr<VulkanDevice> device;
   std::shared_ptr<Swapchain> swapchain;
 };
 } // namespace gfx::rhi::vk

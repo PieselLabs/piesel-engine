@@ -20,6 +20,8 @@ public:
 
   void run();
 
+  virtual void update() = 0;
+
   GLFWwindow *window;
   gfx::rhi::RHIRef rhi;
 };

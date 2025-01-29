@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 struct GLFWwindow;
 
@@ -36,11 +37,16 @@ struct PipelineLayoutDesc {};
 
 struct ComputePipeline {};
 using ComputePipelineRef = std::shared_ptr<ComputePipeline>;
-struct ComputePipelineDesc {
-  ShaderRef &Shader;
-  PipelineLayoutRef &Layout;
-  const char *Entry;
+struct ComputePipelineDesc {};
+
+struct Semaphore {};
+using SemaphoreRef = std::shared_ptr<Semaphore>;
+
+struct Fence {
+  virtual void Wait() = 0;
+  virtual void Reset() = 0;
 };
+using FenceRef = std::shared_ptr<Fence>;
 
 struct RHI {
   virtual CommandListRef CreateCommandList() = 0;
@@ -50,6 +56,8 @@ struct RHI {
   virtual ShaderRef CreateShader(const ShaderDesc &desc) = 0;
   virtual GraphicsPipelineRef CreateGraphicsPipeline(const GraphicsPipelineDesc &desc) = 0;
   virtual ComputePipelineRef CreateComputePipeline(const ComputePipelineDesc &desc) = 0;
+  virtual SemaphoreRef CreateSemphore() = 0;
+  virtual FenceRef CreateFence() = 0;
 };
 
 using RHIRef = std::shared_ptr<RHI>;

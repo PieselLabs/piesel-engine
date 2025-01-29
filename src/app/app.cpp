@@ -17,5 +17,6 @@ App::~App() {
 void App::run() {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
+    update();
   }
 }

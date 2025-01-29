@@ -3,7 +3,7 @@
 #include <VkBootstrap.h>
 
 namespace gfx::rhi::vk {
-Swapchain::Swapchain(std::shared_ptr<Device> inCtx) : ctx(std::move(inCtx)) {
+Swapchain::Swapchain(std::shared_ptr<VulkanDevice> inCtx) : ctx(std::move(inCtx)) {
   vkb::SwapchainBuilder swapchainBuilder{ctx->GetPhysicalDevice(), ctx->GetDevice(), ctx->GetSurface()};
 
   format = VK_FORMAT_B8G8R8A8_UNORM;
@@ -36,7 +36,7 @@ Swapchain::~Swapchain() {
   }
 }
 
-std::shared_ptr<Device> Swapchain::GetCtx() { return ctx; }
+std::shared_ptr<VulkanDevice> Swapchain::GetCtx() { return ctx; }
 VkSwapchainKHR Swapchain::GetSwapchain() { return swapchain; }
 VkFormat Swapchain::GetFormat() { return format; }
 std::vector<VkImage> Swapchain::GetImages() { return images; }

@@ -7,13 +7,13 @@
 namespace gfx::rhi::vk {
 class VulkanCommandList : public CommandList {
 public:
-  VulkanCommandList(std::shared_ptr<Device> device);
+  VulkanCommandList(std::shared_ptr<VulkanDevice> device);
 
   void Begin() override;
 
 private:
   VkCommandBuffer commandBuffers[MAX_FRAMES_IN_FLIGHT];
 
-  std::shared_ptr<Device> device;
+  std::shared_ptr<VulkanDevice> device;
 };
 } // namespace gfx::rhi::vk

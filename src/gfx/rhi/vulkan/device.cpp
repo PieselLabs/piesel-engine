@@ -4,7 +4,7 @@
 
 namespace gfx::rhi::vk {
 
-Device::Device(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window), currentFrame(0) {
+VulkanDevice::VulkanDevice(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window), currentFrame(0) {
   vkb::InstanceBuilder builder;
 
   // make the vulkan instance, with basic debug features
@@ -57,7 +57,7 @@ Device::Device(GLFWwindow *window, const Config &cfg) : cfg(cfg), window(window)
   VK_SAFE_CALL(vkCreateCommandPool(device, &commandPoolInfo, nullptr, &commandPool));
 }
 
-Device::~Device() {
+VulkanDevice::~VulkanDevice() {
   vkDeviceWaitIdle(device);
   vkDestroyCommandPool(device, commandPool, nullptr);
   vkDestroySurfaceKHR(instance, surface, nullptr);
@@ -66,16 +66,16 @@ Device::~Device() {
   vkDestroyInstance(instance, nullptr);
 }
 
-Config Device::GetCfg() { return cfg; }
-VkInstance Device::GetInstance() { return instance; }
-VkDebugUtilsMessengerEXT Device::GetDebugMessenger() { return debugMessenger; }
-VkPhysicalDevice Device::GetPhysicalDevice() { return physicalDevice; }
-VkDevice Device::GetDevice() { return device; }
-VkSurfaceKHR Device::GetSurface() { return surface; }
-VkQueue Device::GetGraphicsQueue() { return graphicsQueue; }
-uint32_t Device::GetGraphicsFamily() { return graphicsFamily; }
-VkCommandPool Device::GetCommandPool() { return commandPool; }
-GLFWwindow *Device::GetWindow() { return window; }
-uint64_t Device::GetCurrentFrame() { return currentFrame; }
+Config VulkanDevice::GetCfg() { return cfg; }
+VkInstance VulkanDevice::GetInstance() { return instance; }
+VkDebugUtilsMessengerEXT VulkanDevice::GetDebugMessenger() { return debugMessenger; }
+VkPhysicalDevice VulkanDevice::GetPhysicalDevice() { return physicalDevice; }
+VkDevice VulkanDevice::GetDevice() { return device; }
+VkSurfaceKHR VulkanDevice::GetSurface() { return surface; }
+VkQueue VulkanDevice::GetGraphicsQueue() { return graphicsQueue; }
+uint32_t VulkanDevice::GetGraphicsFamily() { return graphicsFamily; }
+VkCommandPool VulkanDevice::GetCommandPool() { return commandPool; }
+GLFWwindow *VulkanDevice::GetWindow() { return window; }
+uint64_t VulkanDevice::GetCurrentFrame() { return currentFrame; }
 
 } // namespace gfx::rhi::vk
