@@ -12,20 +12,33 @@ public:
   Device(GLFWwindow *window, const Config &cfg);
   ~Device();
 
+  Config GetCfg();
+  VkInstance GetInstance();
+  VkDebugUtilsMessengerEXT GetDebugMessenger();
+  VkPhysicalDevice GetPhysicalDevice();
+  VkDevice GetDevice();
+  VkSurfaceKHR GetSurface();
+  VkQueue GetGraphicsQueue();
+  uint32_t GetGraphicsFamily();
+  VkCommandPool GetCommandPool();
+  GLFWwindow *GetWindow();
+  uint64_t GetCurrentFrame();
+
+private:
   Config cfg;
 
   VkInstance instance;
-  VkDebugUtilsMessengerEXT debug_messenger;
-  VkPhysicalDevice physical_device;
+  VkDebugUtilsMessengerEXT debugMessenger;
+  VkPhysicalDevice physicalDevice;
   VkDevice device;
   VkSurfaceKHR surface;
 
-  VkQueue graphics_queue;
-  uint32_t graphics_family;
-  VkCommandPool command_pool;
+  VkQueue graphicsQueue;
+  uint32_t graphicsFamily;
+  VkCommandPool commandPool;
 
   GLFWwindow *window;
 
-  uint64_t current_frame;
+  uint64_t currentFrame;
 };
 } // namespace gfx::rhi::vk

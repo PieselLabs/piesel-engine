@@ -3,5 +3,5 @@
 struct GLFWwindow;
 
 namespace gfx::rhi::vk {
-RHIRef create_rhi(GLFWwindow *window, const Config &cfg) { return std::make_shared<VulkanRHI>(window, cfg); }
+RHIRef CreateRhi(GLFWwindow *window, const Config &cfg) { return std::make_shared<VulkanRHI>(window, cfg); }
 } // namespace gfx::rhi::vk

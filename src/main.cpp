@@ -3,10 +3,10 @@
 
 int main() {
   AppConfig cfg;
-  cfg.rhi_config.debug = true;
+  cfg.RhiConfig.Debug = true;
   App app(cfg);
 
-  gfx::rhi::CommandListRef commandList = app.rhi->create_command_list();
+  gfx::rhi::CommandListRef commandList = app.rhi->CreateCommandList();
 
   app.run();
 }
