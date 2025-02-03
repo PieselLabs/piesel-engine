@@ -1,6 +1,7 @@
 #include "rhi.h"
 #include "command_list.h"
 #include "sync.h"
+#include "utils.h"
 
 #include <VkBootstrap.h>
 
@@ -132,6 +133,86 @@ VulkanRHI::~VulkanRHI() {
   for (int i = 0; i < views.size(); i++) {
     vkDestroyImageView(device, views[i], nullptr);
   }
+}
+
+void VulkanRHI::StartFrame(SemaphoreRef &semaphore) {
+  VulkanSemaphore *vkSemaphore = static_cast<VulkanSemaphore *>(semaphore.get());
+
+  VK_SAFE_CALL(vkAcquireNextImageKHR(device, swapchain, 1000000000, vkSemaphore->Get(), nullptr, &swapchainImgIdx));
+}
+
+void VulkanRHI::EndFrame() { currentFrame = (currentFrame + 1) % cfg.InFlightFrames; }
+
+void VulkanRHI::Submit(CommandListRef commandList, const std::vector<SemaphoreRef> &waitSemaphores,
+                       const std::vector<SemaphoreRef> &signalSemaphores, FenceRef signalFence) {
+  VulkanCommandList *vkCommandList = static_cast<VulkanCommandList *>(commandList.get());
+
+  std::vector<VkSemaphoreSubmitInfo> vkWaitSemaphores(waitSemaphores.size());
+  for (int i = 0; i < waitSemaphores.size(); i++) {
+    VkSemaphore semaphore = static_cast<VulkanSemaphore *>(waitSemaphores[i].get())->Get();
+
+    VkSemaphoreSubmitInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+    info.deviceIndex = 0;
+    info.pNext = nullptr;
+    info.value = 1;
+    info.semaphore = semaphore;
+    info.stageMask = VK_PIPELINE_STAGE_2_COLOR_ATTACHMENT_OUTPUT_BIT_KHR;
+
+    vkWaitSemaphores[i] = info;
+  }
+
+  std::vector<VkSemaphoreSubmitInfo> vkSignalSemaphores(signalSemaphores.size());
+  for (int i = 0; i < signalSemaphores.size(); i++) {
+    VkSemaphore semaphore = static_cast<VulkanSemaphore *>(signalSemaphores[i].get())->Get();
+
+    VkSemaphoreSubmitInfo info{};
+    info.sType = VK_STRUCTURE_TYPE_SEMAPHORE_SUBMIT_INFO;
+    info.deviceIndex = 0;
+    info.pNext = nullptr;
+    info.value = 1;
+    info.semaphore = semaphore;
+    info.stageMask = VK_PIPELINE_STAGE_2_ALL_GRAPHICS_BIT;
+
+    vkSignalSemaphores[i] = info;
+  }
+
+  VkCommandBufferSubmitInfo info{};
+  info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_SUBMIT_INFO;
+  info.commandBuffer = vkCommandList->Get();
+  info.deviceMask = 0;
+  info.pNext = nullptr;
+
+  VkSubmitInfo2 submitInfo{};
+  submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO_2;
+  submitInfo.pNext = nullptr;
+  submitInfo.waitSemaphoreInfoCount = waitSemaphores.size();
+  submitInfo.pWaitSemaphoreInfos = vkWaitSemaphores.data();
+  submitInfo.signalSemaphoreInfoCount = signalSemaphores.size();
+  submitInfo.pSignalSemaphoreInfos = vkSignalSemaphores.data();
+  submitInfo.commandBufferInfoCount = 1;
+  submitInfo.pCommandBufferInfos = &info;
+
+  VkFence vkSignalFence = static_cast<VulkanFence *>(signalFence.get())->Get();
+
+  vkQueueSubmit2(graphicsQueue, 1, &submitInfo, vkSignalFence);
+}
+
+void VulkanRHI::Present(SemaphoreRef &semaphore) {
+  VkSemaphore vkSemaphore = static_cast<VulkanSemaphore *>(semaphore.get())->Get();
+
+  VkPresentInfoKHR presentInfo = {};
+  presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+  presentInfo.pNext = nullptr;
+  presentInfo.pSwapchains = &swapchain;
+  presentInfo.swapchainCount = 1;
+
+  presentInfo.pWaitSemaphores = &vkSemaphore;
+  presentInfo.waitSemaphoreCount = 1;
+
+  presentInfo.pImageIndices = &swapchainImgIdx;
+
+  VK_SAFE_CALL(vkQueuePresentKHR(graphicsQueue, &presentInfo));
 }
 
 } // namespace gfx::rhi::vk

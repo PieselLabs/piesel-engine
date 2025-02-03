@@ -43,6 +43,14 @@ public:
   SemaphoreRef CreateSemaphore() override;
   FenceRef CreateFence() override;
 
+  void StartFrame(SemaphoreRef &semaphore) override;
+  void EndFrame() override;
+
+  void Submit(CommandListRef commandList, const std::vector<SemaphoreRef> &waitSemaphores,
+              const std::vector<SemaphoreRef> &signalSemaphores, FenceRef signalFence) override;
+
+  void Present(SemaphoreRef &semaphore) override;
+
   ~VulkanRHI();
 
 private:
@@ -57,7 +65,6 @@ private:
   uint32_t graphicsFamily;
   VkCommandPool commandPool;
   GLFWwindow *window;
-  uint64_t currentFrame;
 
   void InitVulkanDevice();
 
@@ -67,6 +74,9 @@ private:
   std::vector<VkImage> images;
   std::vector<VkImageView> views;
   VkExtent2D extent;
+
+  uint64_t currentFrame;
+  uint32_t swapchainImgIdx;
 
   void InitSwapchain();
 };

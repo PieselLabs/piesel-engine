@@ -8,6 +8,8 @@ namespace gfx::rhi {
 
 struct CommandList {
   virtual void Begin() = 0;
+  virtual void End() = 0;
+  virtual void Flash(int frame) = 0;
 };
 using CommandListRef = std::shared_ptr<CommandList>;
 
@@ -58,6 +60,11 @@ struct RHI {
   virtual ComputePipelineRef CreateComputePipeline(const ComputePipelineDesc &desc) = 0;
   virtual SemaphoreRef CreateSemaphore() = 0;
   virtual FenceRef CreateFence() = 0;
+  virtual void StartFrame(SemaphoreRef &semaphore) = 0;
+  virtual void EndFrame() = 0;
+  virtual void Submit(CommandListRef commandList, const std::vector<SemaphoreRef> &waitSemaphores,
+                      const std::vector<SemaphoreRef> &signalSemaphores, FenceRef signalFence) = 0;
+  virtual void Present(SemaphoreRef &semaphore) = 0;
   virtual ~RHI() = default;
 };
 

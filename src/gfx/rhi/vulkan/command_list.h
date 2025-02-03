@@ -8,7 +8,13 @@ class VulkanCommandList : public CommandList {
 public:
   VulkanCommandList(std::shared_ptr<VulkanRHI> rhi);
 
+  VkCommandBuffer Get();
+
   void Begin() override;
+
+  void End() override;
+
+  void Flash(int frame) override;
 
 private:
   VkCommandBuffer commandBuffers[MAX_FRAMES_IN_FLIGHT];

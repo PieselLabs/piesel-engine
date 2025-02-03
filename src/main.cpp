@@ -4,22 +4,24 @@
 class MyApp : public App {
 public:
   MyApp(AppConfig &cfg) : App(cfg) {
-    renderFence = rhi->CreateFence();
-    swapchainSemaphore = rhi->CreateSemaphore();
     renderSemaphore = rhi->CreateSemaphore();
     commandList = rhi->CreateCommandList();
   }
 
   void update() override {
-    renderFence->Wait();
-    renderFence->Reset();
+    frame++;
+    commandList->Begin();
+    commandList->Flash(frame);
+    commandList->End();
+
+    rhi->Submit(commandList, {swapchainSemaphore}, {renderSemaphore}, renderFence);
+    rhi->Present(renderSemaphore);
   }
 
 private:
-  gfx::rhi::FenceRef renderFence;
-  gfx::rhi::SemaphoreRef swapchainSemaphore;
   gfx::rhi::SemaphoreRef renderSemaphore;
   gfx::rhi::CommandListRef commandList;
+  int frame = 0;
 };
 
 int main() {
