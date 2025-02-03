@@ -56,8 +56,9 @@ struct RHI {
   virtual ShaderRef CreateShader(const ShaderDesc &desc) = 0;
   virtual GraphicsPipelineRef CreateGraphicsPipeline(const GraphicsPipelineDesc &desc) = 0;
   virtual ComputePipelineRef CreateComputePipeline(const ComputePipelineDesc &desc) = 0;
-  virtual SemaphoreRef CreateSemphore() = 0;
+  virtual SemaphoreRef CreateSemaphore() = 0;
   virtual FenceRef CreateFence() = 0;
+  virtual ~RHI() = default;
 };
 
 using RHIRef = std::shared_ptr<RHI>;
