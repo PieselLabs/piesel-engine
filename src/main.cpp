@@ -5,8 +5,8 @@ class MyApp : public App {
 public:
   MyApp(AppConfig &cfg) : App(cfg) {
     renderFence = rhi->CreateFence();
-    swapchainSemaphore = rhi->CreateSemphore();
-    renderSemaphore = rhi->CreateSemphore();
+    swapchainSemaphore = rhi->CreateSemaphore();
+    renderSemaphore = rhi->CreateSemaphore();
     commandList = rhi->CreateCommandList();
   }
 
