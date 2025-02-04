@@ -28,6 +28,7 @@ public:
   uint64_t GetCurrentFrame();
 
   VkSwapchainKHR GetSwapchain();
+  VkImage GetCurrentSwapchainImage();
   VkFormat GetFormat();
   std::vector<VkImage> GetImages();
   std::vector<VkImageView> GetViews();
@@ -50,6 +51,7 @@ public:
               const std::vector<SemaphoreRef> &signalSemaphores, FenceRef signalFence) override;
 
   void Present(SemaphoreRef &semaphore) override;
+  void WaitIdle() override;
 
   ~VulkanRHI();
 

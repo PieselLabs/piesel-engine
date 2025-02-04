@@ -37,7 +37,7 @@ VulkanFence::~VulkanFence() {
   }
 }
 
-void VulkanFence::Wait() { VK_SAFE_CALL(vkWaitForFences(rhi->GetDevice(), 1, &Get(), true, 1000000)); }
+void VulkanFence::Wait() { VK_SAFE_CALL(vkWaitForFences(rhi->GetDevice(), 1, &Get(), true, 1000000000)); }
 
 void VulkanFence::Reset() { vkResetFences(rhi->GetDevice(), 1, &Get()); }
 

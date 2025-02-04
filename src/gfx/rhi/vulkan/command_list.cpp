@@ -32,7 +32,7 @@ void VulkanCommandList::Begin() {
 void VulkanCommandList::End() { VK_SAFE_CALL(vkEndCommandBuffer(Get())); }
 
 void VulkanCommandList::Flash(int frame) {
-  VkImage img = rhi->GetImages()[rhi->GetCurrentFrame()];
+  VkImage img = rhi->GetCurrentSwapchainImage();
   TransitionImage(Get(), img, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_GENERAL);
 
   VkClearColorValue clearValue;

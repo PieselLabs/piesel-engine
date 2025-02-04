@@ -61,7 +61,7 @@ void VulkanRHI::InitVulkanDevice() {
 }
 
 void VulkanRHI::InitSwapchain() {
-  vkb::SwapchainBuilder swapchainBuilder{GetPhysicalDevice(), GetDevice(), GetSurface()};
+  vkb::SwapchainBuilder swapchainBuilder{GetPhysicalDevice(), device, surface};
 
   format = VK_FORMAT_B8G8R8A8_UNORM;
 
@@ -104,6 +104,8 @@ GLFWwindow *VulkanRHI::GetWindow() { return window; }
 uint64_t VulkanRHI::GetCurrentFrame() { return currentFrame; }
 
 VkSwapchainKHR VulkanRHI::GetSwapchain() { return swapchain; }
+VkImage VulkanRHI::GetCurrentSwapchainImage() { return images[swapchainImgIdx]; }
+
 VkFormat VulkanRHI::GetFormat() { return format; }
 std::vector<VkImage> VulkanRHI::GetImages() { return images; }
 std::vector<VkImageView> VulkanRHI::GetViews() { return views; }
@@ -120,19 +122,19 @@ SemaphoreRef VulkanRHI::CreateSemaphore() { return std::make_shared<VulkanSemaph
 FenceRef VulkanRHI::CreateFence() { return std::make_shared<VulkanFence>(shared_from_this()); }
 
 VulkanRHI::~VulkanRHI() {
-  // Destroy VulkanDevice
   vkDeviceWaitIdle(device);
   vkDestroyCommandPool(device, commandPool, nullptr);
-  vkDestroySurfaceKHR(instance, surface, nullptr);
-  vkDestroyDevice(device, nullptr);
-  vkb::destroy_debug_utils_messenger(instance, debugMessenger);
-  vkDestroyInstance(instance, nullptr);
 
   // Destroy Swapchain
   vkDestroySwapchainKHR(device, swapchain, nullptr);
   for (int i = 0; i < views.size(); i++) {
     vkDestroyImageView(device, views[i], nullptr);
   }
+
+  vkDestroySurfaceKHR(instance, surface, nullptr);
+  vkDestroyDevice(device, nullptr);
+  vkb::destroy_debug_utils_messenger(instance, debugMessenger);
+  vkDestroyInstance(instance, nullptr);
 }
 
 void VulkanRHI::StartFrame(SemaphoreRef &semaphore) {
@@ -195,7 +197,7 @@ void VulkanRHI::Submit(CommandListRef commandList, const std::vector<SemaphoreRe
 
   VkFence vkSignalFence = static_cast<VulkanFence *>(signalFence.get())->Get();
 
-  vkQueueSubmit2(graphicsQueue, 1, &submitInfo, vkSignalFence);
+  VK_SAFE_CALL(vkQueueSubmit2(graphicsQueue, 1, &submitInfo, vkSignalFence));
 }
 
 void VulkanRHI::Present(SemaphoreRef &semaphore) {
@@ -213,6 +215,11 @@ void VulkanRHI::Present(SemaphoreRef &semaphore) {
   presentInfo.pImageIndices = &swapchainImgIdx;
 
   VK_SAFE_CALL(vkQueuePresentKHR(graphicsQueue, &presentInfo));
+}
+
+void VulkanRHI::WaitIdle() {
+  vkQueueWaitIdle(graphicsQueue);
+  vkDeviceWaitIdle(device);
 }
 
 } // namespace gfx::rhi::vk

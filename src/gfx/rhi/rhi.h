@@ -65,6 +65,7 @@ struct RHI {
   virtual void Submit(CommandListRef commandList, const std::vector<SemaphoreRef> &waitSemaphores,
                       const std::vector<SemaphoreRef> &signalSemaphores, FenceRef signalFence) = 0;
   virtual void Present(SemaphoreRef &semaphore) = 0;
+  virtual void WaitIdle() = 0;
   virtual ~RHI() = default;
 };
 

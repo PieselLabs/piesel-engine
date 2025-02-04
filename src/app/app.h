@@ -20,10 +20,6 @@ public:
 
   void run();
 
-  virtual void update() = 0;
-
   GLFWwindow *window;
   gfx::rhi::RHIRef rhi;
-  gfx::rhi::SemaphoreRef swapchainSemaphore;
-  gfx::rhi::FenceRef renderFence;
 };
